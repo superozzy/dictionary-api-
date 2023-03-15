@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useState } from "react";
+import "./App.css";
+import ThemeContext from "./context/ThemeContext";
+import NavBar from "./components/NavBar";
+import Search from "./components/Search";
+import FontContext, { FontProvider } from "./context/FontContext";
+import SearchWord from "./components/SearchWord";
 
+import { SearchProvider } from "./context/SearchWordContext";
 function App() {
+  const [theme, setTheme] = useState("light");
+  const toggleTheme = () => {
+    setTheme((current) => (current === "light" ? "dark" : "light"));
+  };
+
+  const { font } = useContext(FontContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <FontProvider>
+        <div className="app" id={theme}>
+          <div className="app" id={font}>
+            <NavBar />
+            <SearchProvider>
+              <Search />
+              <SearchWord />
+            </SearchProvider>
+          </div>
+        </div>
+      </FontProvider>
+    </ThemeContext.Provider>
   );
 }
 
